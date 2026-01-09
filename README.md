@@ -76,21 +76,21 @@ SMOOTHING_ALPHA = 0.7
 If the fist gesture is too sensitive (activates too easily):
 
 ```python
-# Make fist detection stricter (default: 0.35)
+# Make fist detection stricter (default: 0.4)
 FIST_THRESHOLD = 0.30
 
-# Require longer hold time (default: 1.2)
-FIST_DURATION = 1.5
+# Require longer hold time (default: 1.0)
+FIST_DURATION = 1.3
 ```
 
 If the fist gesture is not sensitive enough (hard to activate):
 
 ```python
-# Make fist detection more lenient (default: 0.35)
-FIST_THRESHOLD = 0.45
+# Make fist detection more lenient (default: 0.4)
+FIST_THRESHOLD = 0.50
 
-# Require shorter hold time (default: 1.2)
-FIST_DURATION = 0.9
+# Require shorter hold time (default: 1.0)
+FIST_DURATION = 0.8
 ```
 
 **Tips for better detection:**

@@ -261,11 +261,12 @@ class HandDetector:
             # Also check normalized distance as backup
             normalized_distance = tip_to_wrist / hand_size if hand_size > 0 else 0
 
-            if (tip_to_wrist <= base_to_wrist * 1.1) or (normalized_distance < config.FIST_THRESHOLD):
+            # Balanced detection: tip must be closer or equal to base distance
+            if (tip_to_wrist <= base_to_wrist) or (normalized_distance < config.FIST_THRESHOLD):
                 closed_fingers += 1
 
-        # At least 3 fingers must be closed for a fist (more lenient)
-        return closed_fingers >= 3
+        # At least 4 fingers must be closed for a fist (balanced requirement)
+        return closed_fingers >= 4
 
     def is_high_five(self, lm_list: List[List]) -> bool:
         """
