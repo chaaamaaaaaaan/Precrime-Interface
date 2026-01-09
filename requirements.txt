@@ -1,0 +1,17 @@
+# Precrime Interface - Gesture Control System
+# Python 3.10+ required
+
+# Vision and Hand Tracking
+mediapipe>=0.10.0
+
+# Computer Vision
+opencv-python>=4.8.0
+
+# System Control
+pyautogui>=0.9.54
+
+# Mathematical Operations
+numpy>=1.24.0
+
+# Optional: Advanced macOS control
+# pyobjc-framework-Cocoa>=9.0  # For native macOS APIs
