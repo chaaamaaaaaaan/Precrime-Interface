@@ -279,11 +279,11 @@ class HandDetector:
             normalized_distance = distance / hand_size
 
             # If fingertip is far from wrist, finger is extended
-            if normalized_distance > 0.6:  # Threshold for extended finger
+            if normalized_distance > 0.55:  # Threshold for extended finger (lowered for better sensitivity)
                 extended_fingers += 1
 
-        # At least 4 fingers must be extended for high five
-        return extended_fingers >= 4
+        # At least 3 fingers must be extended for high five (lowered for better sensitivity)
+        return extended_fingers >= 3
 
     def close(self):
         """Clean up resources"""

@@ -15,38 +15,39 @@ CAMERA_FPS = 30
 # MEDIAPIPE DETECTION SETTINGS
 # ============================================================================
 MAX_NUM_HANDS = 2  # Maximum number of hands to detect
-MIN_DETECTION_CONFIDENCE = 0.7  # Minimum confidence for hand detection
-MIN_TRACKING_CONFIDENCE = 0.5  # Minimum confidence for hand tracking
+MIN_DETECTION_CONFIDENCE = 0.5  # Minimum confidence for hand detection (lowered for better sensitivity)
+MIN_TRACKING_CONFIDENCE = 0.3  # Minimum confidence for hand tracking (lowered for better tracking)
 
 # ============================================================================
 # SMOOTHING SETTINGS
 # ============================================================================
-SMOOTHING_ALPHA = 0.5  # EMA smoothing factor (0-1)
+SMOOTHING_ALPHA = 0.6  # EMA smoothing factor (0-1)
 # Higher = more responsive but jittery
 # Lower = smoother but more lag
+# Increased to 0.6 for better responsiveness
 
 # ============================================================================
 # GESTURE DETECTION THRESHOLDS
 # ============================================================================
 # Click Detection (Pinch)
-PINCH_THRESHOLD = 30  # pixels - distance between thumb and index for click
-CLICK_DEBOUNCE_TIME = 0.3  # seconds - minimum time between clicks
+PINCH_THRESHOLD = 40  # pixels - distance between thumb and index for click (increased for easier detection)
+CLICK_DEBOUNCE_TIME = 0.25  # seconds - minimum time between clicks (reduced for faster response)
 
 # Fist Detection (Pause)
-FIST_THRESHOLD = 0.3  # Normalized distance threshold for closed fist
+FIST_THRESHOLD = 0.4  # Normalized distance threshold for closed fist (increased for easier detection)
 FIST_DURATION = 1.0  # seconds - how long to hold fist to toggle pause
 
 # Zoom Detection (Two hands)
-ZOOM_SENSITIVITY = 50  # pixels - minimum distance change to trigger zoom
-ZOOM_DEBOUNCE_TIME = 0.2  # seconds - minimum time between zoom actions
+ZOOM_SENSITIVITY = 35  # pixels - minimum distance change to trigger zoom (reduced for easier detection)
+ZOOM_DEBOUNCE_TIME = 0.15  # seconds - minimum time between zoom actions (reduced for faster response)
 
 # Air Push Detection (Z-axis)
-AIR_PUSH_AREA_THRESHOLD = 0.2  # 20% increase in hand bounding box area
-AIR_PUSH_TIME_WINDOW = 0.2  # seconds - time window to detect push
+AIR_PUSH_AREA_THRESHOLD = 0.15  # 15% increase in hand bounding box area (reduced for easier detection)
+AIR_PUSH_TIME_WINDOW = 0.25  # seconds - time window to detect push (increased for easier detection)
 
 # Scroll Detection
 SCROLL_SENSITIVITY = 2  # pixels per movement unit
-SCROLL_THRESHOLD = 10  # minimum vertical movement to trigger scroll
+SCROLL_THRESHOLD = 5  # minimum vertical movement to trigger scroll (reduced for easier detection)
 
 # ============================================================================
 # SCREEN MAPPING SETTINGS

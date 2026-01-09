@@ -53,6 +53,30 @@ Edit `config.py` to adjust:
 - Smoothing factor
 - Gesture sensitivity
 
+### Improving Sensitivity
+
+If gestures are not responding well, try these adjustments in `config.py`:
+
+```python
+# Make hand detection more sensitive (default: 0.5)
+MIN_DETECTION_CONFIDENCE = 0.4
+
+# Make click easier to trigger (default: 40)
+PINCH_THRESHOLD = 50
+
+# Make scroll more responsive (default: 5)
+SCROLL_THRESHOLD = 3
+
+# Make cursor more responsive (default: 0.6)
+SMOOTHING_ALPHA = 0.7
+```
+
+**Tips for better detection:**
+- Use good lighting (bright, even lighting works best)
+- Keep hands within the interaction region (dashed rectangle)
+- Use a simple background
+- Stay 40-60cm from the camera
+
 ## Architecture
 
 - `hand_detector.py`: MediaPipe wrapper for hand detection
