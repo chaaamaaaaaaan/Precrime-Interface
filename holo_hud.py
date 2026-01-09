@@ -68,6 +68,7 @@ class HoloHUD:
 
         # Draw UI elements (text, status, etc.)
         self._draw_status_indicator(frame, gesture_state)
+        self._draw_fist_progress(frame, gesture_state)
         self._draw_fps_counter(frame)
         self._draw_gesture_info(frame, gesture_state)
 
@@ -230,6 +231,47 @@ class HoloHUD:
         # Bottom-right
         cv2.line(frame, (x2, y2), (x2 - corner_length, y2), color, thickness)
         cv2.line(frame, (x2, y2), (x2, y2 - corner_length), color, thickness)
+
+    def _draw_fist_progress(self, frame: np.ndarray, gesture_state: GestureState):
+        """
+        Draw fist hold progress bar
+
+        Args:
+            frame: Frame to draw on
+            gesture_state: Current gesture state
+        """
+        if gesture_state.fist_progress > 0:
+            # Progress bar dimensions
+            bar_width = 300
+            bar_height = 20
+            bar_x = (self.frame_width - bar_width) // 2
+            bar_y = self.frame_height - 80
+
+            # Background bar
+            cv2.rectangle(frame, (bar_x, bar_y), (bar_x + bar_width, bar_y + bar_height),
+                         (50, 50, 50), -1)
+
+            # Progress bar
+            progress_width = int(bar_width * gesture_state.fist_progress)
+            color = config.HUD_COLOR_PRIMARY  # Cyan
+            cv2.rectangle(frame, (bar_x, bar_y), (bar_x + progress_width, bar_y + bar_height),
+                         color, -1)
+
+            # Border
+            cv2.rectangle(frame, (bar_x, bar_y), (bar_x + bar_width, bar_y + bar_height),
+                         config.HUD_COLOR_TEXT, 2)
+
+            # Text
+            text = "Hold fist to toggle..."
+            font = cv2.FONT_HERSHEY_SIMPLEX
+            font_scale = 0.5
+            thickness = 1
+            text_size = cv2.getTextSize(text, font, font_scale, thickness)[0]
+            text_x = (self.frame_width - text_size[0]) // 2
+            text_y = bar_y - 10
+
+            cv2.putText(frame, text, (text_x, text_y),
+                       font, font_scale, config.HUD_COLOR_TEXT, thickness)
 
     def _draw_status_indicator(self, frame: np.ndarray, gesture_state: GestureState):
         """

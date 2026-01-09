@@ -23,6 +23,7 @@ class GestureState:
         self.air_push_detected = False
         self.active_hand = None  # Primary hand for cursor control
         self.both_hands_active = False
+        self.fist_progress = 0.0  # Progress of fist hold (0.0 to 1.0)
 
 
 class GestureEngine:
@@ -44,6 +45,8 @@ class GestureEngine:
         self.last_click_time = 0
         self.last_zoom_time = 0
         self.fist_start_time = None
+        self.last_toggle_time = 0  # Track last pause toggle time
+        self.toggle_cooldown = 1.5  # Cooldown period after toggle
         self.last_hand_area = 0
         self.area_change_time = 0
 
@@ -85,15 +88,33 @@ class GestureEngine:
         self.state.active_hand = primary_hand
 
         # Check for pause/resume gesture (fist)
-        if self.detector.is_fist(primary_hand.lm_list):
-            if self.fist_start_time is None:
-                self.fist_start_time = time.time()
-            elif time.time() - self.fist_start_time >= config.FIST_DURATION:
-                # Toggle pause state
-                self.state.is_paused = not self.state.is_paused
-                self.fist_start_time = None  # Reset to prevent repeated toggling
+        current_time = time.time()
+
+        # Only process fist gesture if cooldown period has passed
+        if current_time - self.last_toggle_time > self.toggle_cooldown:
+            if self.detector.is_fist(primary_hand.lm_list):
+                if self.fist_start_time is None:
+                    self.fist_start_time = current_time
+                    print(f"[DEBUG] Fist detected, starting timer...")
+                else:
+                    elapsed = current_time - self.fist_start_time
+                    # Update progress (0.0 to 1.0)
+                    self.state.fist_progress = min(1.0, elapsed / config.FIST_DURATION)
+
+                    if elapsed >= config.FIST_DURATION:
+                        # Toggle pause state
+                        self.state.is_paused = not self.state.is_paused
+                        mode = "ACTIVE" if not self.state.is_paused else "PAUSED"
+                        print(f"[INFO] System toggled to {mode}")
+                        self.fist_start_time = None
+                        self.last_toggle_time = current_time
+                        self.state.fist_progress = 0.0
+            else:
+                self.fist_start_time = None
+                self.state.fist_progress = 0.0
         else:
-            self.fist_start_time = None
+            # In cooldown period
+            self.state.fist_progress = 0.0
 
         # If paused, don't process other gestures
         if self.state.is_paused:

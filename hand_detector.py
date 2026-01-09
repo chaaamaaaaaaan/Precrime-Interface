@@ -237,17 +237,35 @@ class HandDetector:
             return False
 
         closed_fingers = 0
-        for tip_id in config.FINGERTIP_IDS:
-            tip = lm_list[tip_id]
-            distance = self.calculate_distance(wrist, tip)
-            normalized_distance = distance / hand_size
 
-            # If fingertip is close to wrist, finger is closed
-            if normalized_distance < config.FIST_THRESHOLD:
+        # Check each finger separately with improved logic
+        # For each finger, check if tip is closer to wrist than the MCP joint (knuckle)
+        finger_landmarks = [
+            (4, 2),   # Thumb: tip vs CMC joint
+            (8, 5),   # Index: tip vs MCP joint
+            (12, 9),  # Middle: tip vs MCP joint
+            (16, 13), # Ring: tip vs MCP joint
+            (20, 17)  # Pinky: tip vs MCP joint
+        ]
+
+        for tip_id, base_id in finger_landmarks:
+            tip = lm_list[tip_id]
+            base = lm_list[base_id]
+
+            # Distance from tip to wrist
+            tip_to_wrist = self.calculate_distance(wrist, tip)
+            # Distance from base to wrist
+            base_to_wrist = self.calculate_distance(wrist, base)
+
+            # If tip is closer to wrist than base, or very close to base, finger is closed
+            # Also check normalized distance as backup
+            normalized_distance = tip_to_wrist / hand_size if hand_size > 0 else 0
+
+            if (tip_to_wrist <= base_to_wrist * 1.1) or (normalized_distance < config.FIST_THRESHOLD):
                 closed_fingers += 1
 
-        # All 5 fingers must be closed for a fist
-        return closed_fingers >= 4  # Allow some tolerance
+        # At least 3 fingers must be closed for a fist (more lenient)
+        return closed_fingers >= 3
 
     def is_high_five(self, lm_list: List[List]) -> bool:
         """
