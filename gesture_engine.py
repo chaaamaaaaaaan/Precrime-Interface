@@ -46,7 +46,7 @@ class GestureEngine:
         self.last_zoom_time = 0
         self.fist_start_time = None
         self.last_toggle_time = 0  # Track last pause toggle time
-        self.toggle_cooldown = 2.0  # Cooldown period after toggle (increased to prevent accidental toggles)
+        self.toggle_cooldown = 1.5  # Cooldown period after toggle
         self.last_hand_area = 0
         self.area_change_time = 0
 

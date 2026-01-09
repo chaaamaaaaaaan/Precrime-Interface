@@ -257,16 +257,15 @@ class HandDetector:
             # Distance from base to wrist
             base_to_wrist = self.calculate_distance(wrist, base)
 
-            # If tip is closer to wrist than base, finger is closed
-            # Use stricter threshold to avoid false positives
+            # If tip is closer to wrist than base, or very close to base, finger is closed
+            # Also check normalized distance as backup
             normalized_distance = tip_to_wrist / hand_size if hand_size > 0 else 0
 
-            # Both conditions must be true for stricter detection
-            if (tip_to_wrist < base_to_wrist * 0.95) and (normalized_distance < config.FIST_THRESHOLD):
+            if (tip_to_wrist <= base_to_wrist * 1.1) or (normalized_distance < config.FIST_THRESHOLD):
                 closed_fingers += 1
 
-        # At least 4 fingers must be closed for a fist (stricter requirement)
-        return closed_fingers >= 4
+        # At least 3 fingers must be closed for a fist (more lenient)
+        return closed_fingers >= 3
 
     def is_high_five(self, lm_list: List[List]) -> bool:
         """

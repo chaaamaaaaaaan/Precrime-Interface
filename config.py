@@ -34,8 +34,8 @@ PINCH_THRESHOLD = 40  # pixels - distance between thumb and index for click (inc
 CLICK_DEBOUNCE_TIME = 0.25  # seconds - minimum time between clicks (reduced for faster response)
 
 # Fist Detection (Pause)
-FIST_THRESHOLD = 0.35  # Normalized distance threshold for closed fist (lowered for stricter detection)
-FIST_DURATION = 1.2  # seconds - how long to hold fist to toggle pause (increased to prevent accidental toggles)
+FIST_THRESHOLD = 0.5  # Normalized distance threshold for closed fist
+FIST_DURATION = 0.8  # seconds - how long to hold fist to toggle pause
 
 # Zoom Detection (Two hands)
 ZOOM_SENSITIVITY = 35  # pixels - minimum distance change to trigger zoom (reduced for easier detection)
