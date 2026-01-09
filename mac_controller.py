@@ -71,8 +71,8 @@ class MacController:
         norm_x = (cam_x - self.interaction_x_min) / (self.interaction_x_max - self.interaction_x_min)
         norm_y = (cam_y - self.interaction_y_min) / (self.interaction_y_max - self.interaction_y_min)
 
-        # Mirror X coordinate (camera is mirrored)
-        norm_x = 1.0 - norm_x
+        # No mirroring - direct mapping for intuitive control
+        # (Right hand movement = right cursor movement)
 
         # Map to screen coordinates
         raw_screen_x = int(norm_x * self.screen_width)
